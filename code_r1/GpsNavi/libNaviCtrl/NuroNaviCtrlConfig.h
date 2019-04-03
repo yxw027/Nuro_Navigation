@@ -1,0 +1,45 @@
+#ifndef NURO_NAVICTRL_CONFIG_20090730
+#define NURO_NAVICTRL_CONFIG_20090730
+
+#include "NuroDefine.h"
+
+#ifdef NURO_OS_HV_UCOS
+#define _USE_ALL_CODE
+#endif
+
+#ifndef USE_DYM_DLL
+#define _USE_ALL_CODE
+#endif
+
+#ifndef _USE_ALL_CODE
+
+#define _USE_ROUTE_DLL
+#define	_USE_MEMMGR_DLL
+#define _USE_GDI_DLL
+#define _USE_FILESYS_DLL
+#define _USE_INNAVI_DLL
+#define _USE_DRAWMAP_DLL
+#define _USE_MATHTOOL_DLL
+#define _USE_DRAWINFOMAP_DLL
+#define _USE_DRAWINFONAVI_DLL
+#define _USE_SEARCHNEW_DLL
+#define _USE_GPSOPEN_DLL
+#define _USE_MAPDATA_DLL
+
+#else
+#define _USE_ROUTE_LIB
+#define _USE_MEMMGR_LIB
+#define _USE_GDI_LIB
+#define _USE_FILESYS_LIB
+#define _USE_INNAVI_LIB
+#define _USE_DRAWMAP_LIB
+#define _USE_MATHTOOL_LIB
+#define _USE_DRAWINFOMAP_LIB
+#define _USE_DRAWINFONAVI_LIB
+#define _USE_SEARCHNEW_LIB
+#define _USE_GPSOPEN_LIB
+#define _USE_MAPDATA_LIB
+
+#endif
+
+#endif // NURO_NAVICTRL_CONFIG_20090730

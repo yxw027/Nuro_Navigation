@@ -1,0 +1,559 @@
+# Microsoft eMbedded Visual Tools Project File - Name="primtest" - Package Owner=<4>
+# Microsoft eMbedded Visual Tools Generated Build File, Format Version 6.02
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (WCE ARMV4) Application" 0xa301
+
+CFG=primtest - Win32 (WCE ARMV4) Release ARM
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
+!MESSAGE 
+!MESSAGE NMAKE /f "primtest.vcn".
+!MESSAGE 
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "primtest.vcn" CFG="primtest - Win32 (WCE ARMV4) Release ARM"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "primtest - Win32 (WCE ARMV4) Release ARM" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE "primtest - Win32 (WCE ARMV4) Debug ARM" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE "primtest - Win32 (WCE ARMV4) Release XScale" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE "primtest - Win32 (WCE ARMV4) Debug XScale" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE 
+
+# Begin Project
+# PROP AllowPerConfigDependencies 0
+# PROP Scc_ProjName ""
+# PROP Scc_LocalPath ""
+# PROP ATL_Project 2
+CPP=clarm.exe
+MTL=midl.exe
+RSC=rc.exe
+
+!IF  "$(CFG)" == "primtest - Win32 (WCE ARMV4) Release ARM"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "ARMV4Rel"
+# PROP BASE Intermediate_Dir "ARMV4Rel"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "..\..\bin\arm\Release"
+# PROP Intermediate_Dir "..\..\obj\primtest\arm\Release"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /YX /O2 /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /I "../.." /I "..\..\include" /I "..\..\ctk" /I "..\.." /D "NDEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "COMMON_LITE" /YX /O2 /M$(CECrtMT) /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 platform.lib fixed.lib ctk.lib aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"$(CENoDefaultLib)" /libpath:"..\..\bin\arm\Release" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "primtest - Win32 (WCE ARMV4) Debug ARM"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "ARMV4Dbg"
+# PROP BASE Intermediate_Dir "ARMV4Dbg"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "..\..\bin\arm\Debug"
+# PROP Intermediate_Dir "..\..\obj\primtest\arm\Debug"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /YX /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /I "..\..\include" /I "..\..\ctk" /I "..\.." /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "COMMON_LITE" /YX /M$(CECrtMTDebug) /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 platform.lib fixed.lib ctk.lib aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /libpath:"..\..\bin\arm\Debug" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "primtest - Win32 (WCE ARMV4) Release XScale"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "ARMV4Release XScale"
+# PROP BASE Intermediate_Dir "ARMV4Release XScale"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "..\..\bin\xscale\Release"
+# PROP Intermediate_Dir "..\..\obj\primtest\xscale\Release"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD BASE CPP /nologo /W3 /D "NDEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "COMMON_LITE" /YX /O2 /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /I "../.." /I "../../src" /I "..\..\include" /I "..\..\ctk" /I "..\.." /D "NDEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "COMMON_LITE" /YX /O2 /M$(CECrtMT) /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 platform.lib fixed.lib ctk.lib aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 platform.lib fixed.lib ctk.lib aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"$(CENoDefaultLib)" /libpath:"..\..\bin\xscale\Release" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "primtest - Win32 (WCE ARMV4) Debug XScale"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "ARMV4Debug XScale"
+# PROP BASE Intermediate_Dir "ARMV4Debug XScale"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "..\..\bin\xscale\Debug"
+# PROP Intermediate_Dir "..\..\obj\primtest\xscale\Debug"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "COMMON_LITE" /YX /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /I "../.." /I "../../src" /I "..\..\include" /I "..\..\ctk" /I "..\.." /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "COMMON_LITE" /YX /M$(CECrtMTDebug) /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 platform.lib fixed.lib ctk.lib aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 platform.lib fixed.lib ctk.lib aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /libpath:"..\..\bin\xscale\Debug" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ENDIF 
+
+# Begin Target
+
+# Name "primtest - Win32 (WCE ARMV4) Release ARM"
+# Name "primtest - Win32 (WCE ARMV4) Debug ARM"
+# Name "primtest - Win32 (WCE ARMV4) Release XScale"
+# Name "primtest - Win32 (WCE ARMV4) Debug XScale"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\alias.c
+DEP_CPP_ALIAS=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\alpha.c
+DEP_CPP_ALPHA=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\blend.c
+DEP_CPP_BLEND=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\depth.c
+DEP_CPP_DEPTH=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\dither.c
+DEP_CPP_DITHE=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\driver.c
+DEP_CPP_DRIVE=\
+	"..\..\conform\primtest\driver.h"\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\conform\primtest\tproto.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\fog.c
+DEP_CPP_FOG_C=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\hint.c
+DEP_CPP_HINT_=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\light.c
+DEP_CPP_LIGHT=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\logic.c
+DEP_CPP_LOGIC=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\prim.c
+DEP_CPP_PRIM_=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\scissor.c
+DEP_CPP_SCISS=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\shade.c
+DEP_CPP_SHADE=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\shell.c
+DEP_CPP_SHELL=\
+	"..\..\conform\primtest\driver.h"\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\stencil.c
+DEP_CPP_STENC=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\texture.c
+DEP_CPP_TEXTU=\
+	"..\..\conform\primtest\shell.h"\
+	"..\..\ctk\ctk.h"\
+	"..\..\ctk\GLES\glext.h"\
+	"..\..\fixed\fixed.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\platform\gl_fixed_point.h"\
+	"..\..\platform\gl_single_precision.h"\
+	"..\..\platform\math_fixed.h"\
+	"..\..\platform\math_float.h"\
+	"..\..\platform\platform.h"\
+	"..\..\platform\platform_gl.h"\
+	"..\..\platform\platform_random.h"\
+	"..\..\platform\platform_stdlib.h"\
+	"..\..\platform\platform_types.h"\
+	"..\..\platform\printf_fixed.h"\
+	"..\..\platform\printf_float.h"\
+	"..\..\platform\stdlib_ansi.h"\
+	
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\driver.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\shell.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\conform\primtest\tproto.h
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# End Group
+# End Target
+# End Project

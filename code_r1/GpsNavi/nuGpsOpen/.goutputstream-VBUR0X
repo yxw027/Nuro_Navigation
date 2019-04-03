@@ -1,0 +1,44 @@
+
+#include "libGpsOpen.h"
+#include "CommportCtrl.h"
+#include "GPSDataCol.h"
+#include "NuroDefine.h"
+#include "GpsLogFileZ.h"
+#include "GpsEstimateZ.h"
+#define	GPS_FIX_MIN_SPEED					36
+
+#ifdef ANDROID_GPS
+#define ANDROID_GPS_LEN 128
+static nuBYTE sbuffer[128][ANDROID_GPS_LEN]={0};
+static nuINT  slen=0;
+static nuCHAR sNmeaBuffer [1024] ; 
+static nuINT nPopIdx=-1;
+static nuINT nPushIdx=0;
+#include <stdio.h>
+#include <android/log.h>
+#endif
+typedef union tagUNIONGPS
+{
+	nuFILE*			pFile;
+	CCommportCtrl*	pComm;
+	nuHANDLE		hUcos;
+}UNIONGPS,*PUNIONGPS;
+
+typedef struct tagFEEDBACKINFO
+{
+	nuLONG	nRoadx;
+	nuLONG	nRoady;
+	nuLONG	nOldx;
+	nuLONG	nOldy;
+	short	nSpeed;
+	int		nTime;
+	int		Angle;
+	int		SystemAngle;
+}FEEDBACKINFO,*PFEEDBACKINFO;
+
+
+//GPSOpen?B?@??
+nuBOOL b_GPSOpenWorking=nuFALSE;
+
+UNIONGPS		g_hGps = {0};
+FEEDBACKINFO	g_FeedBackInfo = {0};//?t?

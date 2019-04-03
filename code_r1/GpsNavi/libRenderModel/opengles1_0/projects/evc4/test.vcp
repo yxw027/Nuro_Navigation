@@ -1,0 +1,733 @@
+# Microsoft eMbedded Visual Tools Project File - Name="test" - Package Owner=<4>
+# Microsoft eMbedded Visual Tools Generated Build File, Format Version 6.02
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (WCE ARMV4) Application" 0xa301
+# TARGTYPE "Win32 (WCE emulator) Application" 0xa601
+
+CFG=test - Win32 (WCE emulator) Debug
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
+!MESSAGE 
+!MESSAGE NMAKE /f "test.vcn".
+!MESSAGE 
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "test.vcn" CFG="test - Win32 (WCE emulator) Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "test - Win32 (WCE emulator) Release" (based on "Win32 (WCE emulator) Application")
+!MESSAGE "test - Win32 (WCE emulator) Debug" (based on "Win32 (WCE emulator) Application")
+!MESSAGE "test - Win32 (WCE ARMV4) Release XScale" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE "test - Win32 (WCE ARMV4) Debug XScale" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE "test - Win32 (WCE ARMV4) Debug ARM" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE "test - Win32 (WCE ARMV4) Release ARM" (based on "Win32 (WCE ARMV4) Application")
+!MESSAGE 
+
+# Begin Project
+# PROP AllowPerConfigDependencies 0
+# PROP Scc_ProjName ""
+# PROP Scc_LocalPath ""
+# PROP ATL_Project 2
+
+!IF  "$(CFG)" == "test - Win32 (WCE emulator) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "emulatorRel"
+# PROP BASE Intermediate_Dir "emulatorRel"
+# PROP BASE CPU_ID "{32E52003-403E-442D-BE48-DE10F8C6131D}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "..\..\bin\emu\Release"
+# PROP Intermediate_Dir "..\..\obj\test\emu\Release"
+# PROP CPU_ID "{32E52003-403E-442D-BE48-DE10F8C6131D}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "_i386_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "_i386_" /r
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "_i386_" /D UNDER_CE=$(CEVersion) /D "i_386_" /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "NDEBUG" /Yu"stdafx.h" /Gs8192 /GF /O2 /c
+# ADD CPP /nologo /W3 /GX /I "..\..\include" /I "..\..\src" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "_i386_" /D UNDER_CE=$(CEVersion) /D "i_386_" /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "NDEBUG" /Fp"..\..\obj\OGLES\emu\Release/test.pch" /Yu"stdafx.h" /Gs8192 /GF /O2 /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) aygshell.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /subsystem:$(CESubsystem) /MACHINE:IX86
+# ADD LINK32 $(CEx86Corelibc) aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /subsystem:$(CESubsystem) /MACHINE:IX86
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE emulator) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "emulatorDbg"
+# PROP BASE Intermediate_Dir "emulatorDbg"
+# PROP BASE CPU_ID "{32E52003-403E-442D-BE48-DE10F8C6131D}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "..\..\bin\emu\Debug"
+# PROP Intermediate_Dir "..\..\obj\test\emu\Debug"
+# PROP CPU_ID "{32E52003-403E-442D-BE48-DE10F8C6131D}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d "$(CePlatform)" /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "_X86_" /d "x86" /d "_i386_" /r
+# ADD RSC /l 0x409 /d "$(CePlatform)" /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "_X86_" /d "x86" /d "_i386_" /r
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D "_i386_" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "i_386_" /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /Yu"stdafx.h" /Gs8192 /GF /c
+# ADD CPP /nologo /W3 /GX /Zi /Od /I "..\..\include" /I "..\..\src" /D "DEBUG" /D "_i386_" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "i_386_" /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /FR /Fp"..\..\obj\OGLES\emu\Debug/test.pch" /Yu"stdafx.h" /Gs8192 /GF /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) aygshell.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /subsystem:$(CESubsystem) /MACHINE:IX86
+# ADD LINK32 $(CEx86Corelibc) aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /map /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /subsystem:$(CESubsystem) /MACHINE:IX86
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release XScale"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "ARMV4Rel"
+# PROP BASE Intermediate_Dir "ARMV4Rel"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "..\..\bin\xscale\Release"
+# PROP Intermediate_Dir "..\..\obj\test\xscale\Release"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /YX /O2 /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /GX /Zi /I "..\..\include" /I "..\..\src" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /FR /Fp"..\..\obj\OGLES\arm\Release/test.pch" /YX /QRxscale /O2 /M$(CECrtMT) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /libpath:"..\..\bin\xscale\Release" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug XScale"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "ARMV4Dbg"
+# PROP BASE Intermediate_Dir "ARMV4Dbg"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "..\..\bin\xscale\Debug"
+# PROP Intermediate_Dir "..\..\obj\test\xscale\Debug"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /YX /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /I "..\..\include" /I "..\..\src" /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /FR /Fp"..\..\obj\OGLES\arm\Debug/test.pch" /Yu"stdafx.h" /M$(CECrtMTDebug) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /libpath:"..\..\bin\xscale\Debug" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug ARM"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "ARMV4Debug ARM"
+# PROP BASE Intermediate_Dir "ARMV4Debug ARM"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "..\..\bin\arm\Debug"
+# PROP Intermediate_Dir "..\..\obj\test\arm\Debug"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /GX /Zi /Od /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /FR /Fp"..\..\obj\OGLES\arm\Debug/test.pch" /Yu"stdafx.h" /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /I "..\..\include" /I "..\..\src" /D "DEBUG" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /FR /Fp"..\..\obj\OGLES\arm\Debug/test.pch" /Yu"stdafx.h" /M$(CECrtMTDebug) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /libpath:"C:\Program Files\Intel\2700G OpenGL-ES\Lib" /libpath:"..\..\bin\arm\Release" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release ARM"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "ARMV4Release ARM"
+# PROP BASE Intermediate_Dir "ARMV4Release ARM"
+# PROP BASE CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "..\..\bin\arm\Release"
+# PROP Intermediate_Dir "..\..\obj\test\arm\Release"
+# PROP CPU_ID "{ECBEA43D-CD7B-4852-AD55-D4227B5D624B}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Sec_PrivilegedType 1
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /d "ARMV4" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /GX /Zi /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /FR /Fp"..\..\obj\OGLES\arm\Release/test.pch" /YX /O2 /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /Zi /I "..\..\include" /I "..\..\src" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D "ARMV4" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /FR /Fp"..\..\obj\OGLES\arm\Release/test.pch" /YX /O2 /M$(CECrtMT) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 aygshell.lib commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /libpath:"C:\Program Files\Intel\2700G OpenGL-ES\Lib" /libpath:"..\..\bin\arm\Release" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ENDIF 
+
+# Begin Target
+
+# Name "test - Win32 (WCE emulator) Release"
+# Name "test - Win32 (WCE emulator) Debug"
+# Name "test - Win32 (WCE ARMV4) Release XScale"
+# Name "test - Win32 (WCE ARMV4) Debug XScale"
+# Name "test - Win32 (WCE ARMV4) Debug ARM"
+# Name "test - Win32 (WCE ARMV4) Release ARM"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=..\..\test\paint.cpp
+
+!IF  "$(CFG)" == "test - Win32 (WCE emulator) Release"
+
+DEP_CPP_PAINT=\
+	"..\..\src\Color.h"\
+	"..\..\src\Config.h"\
+	"..\..\src\Context.h"\
+	"..\..\src\fixed.h"\
+	"..\..\src\FractionalColor.h"\
+	"..\..\src\Light.h"\
+	"..\..\src\linalg.h"\
+	"..\..\src\Material.h"\
+	"..\..\src\MatrixStack.h"\
+	"..\..\src\OGLES.h"\
+	"..\..\src\Rasterizer.h"\
+	"..\..\src\RasterizerState.h"\
+	"..\..\src\Texture.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	
+NODEP_CPP_PAINT=\
+	"..\..\src\GLES\egl.h"\
+	"..\..\src\GLES\egltypes.h"\
+	"..\..\src\GLES\gl.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\pp.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE emulator) Debug"
+
+DEP_CPP_PAINT=\
+	"..\..\include\GLES\egl.h"\
+	"..\..\include\GLES\egltypes.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\include\GLES\glext.h"\
+	"..\..\src\Color.h"\
+	"..\..\src\fixed.h"\
+	"..\..\src\OGLES.h"\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	"..\..\test\UIHelper.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_PAINT=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\emulator\vibrate.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release XScale"
+
+DEP_CPP_PAINT=\
+	"..\..\include\GLES\egl.h"\
+	"..\..\include\GLES\egltypes.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\include\GLES\glext.h"\
+	"..\..\src\Color.h"\
+	"..\..\src\fixed.h"\
+	"..\..\src\OGLES.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	
+NODEP_CPP_PAINT=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug XScale"
+
+DEP_CPP_PAINT=\
+	"..\..\include\GLES\egl.h"\
+	"..\..\include\GLES\egltypes.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\include\GLES\glext.h"\
+	"..\..\src\Color.h"\
+	"..\..\src\fixed.h"\
+	"..\..\src\OGLES.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	
+NODEP_CPP_PAINT=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug ARM"
+
+DEP_CPP_PAINT=\
+	"..\..\include\GLES\egl.h"\
+	"..\..\include\GLES\egltypes.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\include\GLES\glext.h"\
+	"..\..\src\Color.h"\
+	"..\..\src\fixed.h"\
+	"..\..\src\OGLES.h"\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	"..\..\test\UIHelper.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_PAINT=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release ARM"
+
+DEP_CPP_PAINT=\
+	"..\..\include\GLES\egl.h"\
+	"..\..\include\GLES\egltypes.h"\
+	"..\..\include\GLES\gl.h"\
+	"..\..\include\GLES\glext.h"\
+	"..\..\src\Color.h"\
+	"..\..\src\fixed.h"\
+	"..\..\src\OGLES.h"\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	"..\..\test\UIHelper.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_PAINT=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\stdafx.cpp
+
+!IF  "$(CFG)" == "test - Win32 (WCE emulator) Release"
+
+DEP_CPP_STDAF=\
+	"..\..\test\stdafx.h"\
+	
+NODEP_CPP_STDAF=\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+# ADD CPP /Yc"stdafx.h"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE emulator) Debug"
+
+DEP_CPP_STDAF=\
+	"..\..\test\stdafx.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_STDAF=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\emulator\vibrate.h"\
+	
+# ADD CPP /Yc"stdafx.h"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release XScale"
+
+DEP_CPP_STDAF=\
+	"..\..\test\stdafx.h"\
+	
+NODEP_CPP_STDAF=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+# ADD CPP /Yc"stdafx.h"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug XScale"
+
+DEP_CPP_STDAF=\
+	"..\..\test\stdafx.h"\
+	
+NODEP_CPP_STDAF=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+# ADD CPP /Yc"stdafx.h"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug ARM"
+
+DEP_CPP_STDAF=\
+	"..\..\test\stdafx.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_STDAF=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+# ADD BASE CPP /Yc"stdafx.h"
+# ADD CPP /Yc"stdafx.h"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release ARM"
+
+DEP_CPP_STDAF=\
+	"..\..\test\stdafx.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_STDAF=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+# ADD BASE CPP /Yc"stdafx.h"
+# ADD CPP /Yc"stdafx.h"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\testce.cpp
+
+!IF  "$(CFG)" == "test - Win32 (WCE emulator) Release"
+
+DEP_CPP_TESTC=\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	
+NODEP_CPP_TESTC=\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE emulator) Debug"
+
+DEP_CPP_TESTC=\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_TESTC=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\emulator\vibrate.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release XScale"
+
+DEP_CPP_TESTC=\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	
+NODEP_CPP_TESTC=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug XScale"
+
+DEP_CPP_TESTC=\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	
+NODEP_CPP_TESTC=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug ARM"
+
+DEP_CPP_TESTC=\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_TESTC=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release ARM"
+
+DEP_CPP_TESTC=\
+	"..\..\test\stdafx.h"\
+	"..\..\test\test.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_TESTC=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\UIHelper.cpp
+
+!IF  "$(CFG)" == "test - Win32 (WCE emulator) Release"
+
+DEP_CPP_UIHEL=\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\UIHelper.h"\
+	
+NODEP_CPP_UIHEL=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\emulator\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE emulator) Debug"
+
+DEP_CPP_UIHEL=\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\UIHelper.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_UIHEL=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\emulator\vibrate.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release XScale"
+
+DEP_CPP_UIHEL=\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\UIHelper.h"\
+	
+NODEP_CPP_UIHEL=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug XScale"
+
+DEP_CPP_UIHEL=\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\UIHelper.h"\
+	
+NODEP_CPP_UIHEL=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	".\inuserm.h"\
+	".\ipapi.h"\
+	".\x.h"\
+	".\ygshell.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug ARM"
+
+DEP_CPP_UIHEL=\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\UIHelper.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_UIHEL=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release ARM"
+
+DEP_CPP_UIHEL=\
+	"..\..\test\shguim.h"\
+	"..\..\test\stdafx.h"\
+	"..\..\test\UIHelper.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"gx.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	{$(INCLUDE)}"winuserm.h"\
+	
+NODEP_CPP_UIHEL=\
+	"..\..\..\..\Program Files\Windows CE Tools\wce420\POCKET PC 2003\Include\ARMV4\vibrate.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=..\..\test\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\stdafx.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\test.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\UIHelper.h
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=..\..\test\hi_res_a.bin
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\small.ico
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\test.ico
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\test\test.rc
+
+!IF  "$(CFG)" == "test - Win32 (WCE emulator) Release"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE emulator) Debug"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release XScale"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug XScale"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Debug ARM"
+
+!ELSEIF  "$(CFG)" == "test - Win32 (WCE ARMV4) Release ARM"
+
+!ENDIF 
+
+# End Source File
+# End Group
+# End Target
+# End Project

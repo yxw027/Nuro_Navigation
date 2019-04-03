@@ -1,0 +1,33 @@
+NAME TEST
+
+#include <eikon.rh>
+#include <eikon.rsg>
+#include <avkon.rh>
+#include <avkon.rsg>
+
+RESOURCE RSS_SIGNATURE {}
+RESOURCE TBUF { buf="";}
+
+RESOURCE EIK_APP_INFO
+{
+	menubar=r_menubar;
+	cba=R_AVKON_SOFTKEYS_OPTIONS_EXIT;
+}
+
+RESOURCE MENU_BAR r_menubar
+{
+	titles=
+	{
+		MENU_TITLE { menu_pane=r_menupane;}
+	};
+}
+
+RESOURCE MENU_PANE r_menupane
+{
+        items=
+        {
+                MENU_ITEM {command=200;txt="Bitmap";},
+                MENU_ITEM {command=201;txt="OGLES";},
+		MENU_ITEM {command=EAknSoftkeyExit;txt="Quit";}
+        };
+}

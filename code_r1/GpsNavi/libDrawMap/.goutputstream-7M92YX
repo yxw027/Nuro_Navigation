@@ -1,0 +1,440 @@
+// PoiName.cpp: implementation of the CPoiName class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "PoiName.h"
+#include "RoadName.h"
+#include "libDrawMap.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CPoiName::CPoiName()
+{
+	m_pRoadName	= NULL;
+	m_pPoiList	= NULL;
+	m_nPoiCount	= 0;
+	m_nPoiIndex = 0;
+	m_nMapType	= MAP_DEFAULT;
+}
+
+CPoiName::~CPoiName()
+{
+	Free();
+}
+
+nuBOOL CPoiName::Initialize(class CRoadName* pRoadName, PPOISETTING	pPoiSetting, nuBYTE nMapType/* = MAP_DEFAULT*/ )
+{
+	m_nScaleCount   = 0;
+	m_pPriorityInfo = NULL;
+	//
+	if( ReadPoiPriorityFile() )
+	{
+		m_bPriority = nuTRUE;
+		m_pPoiList = new POINODE[_POI_MAX_COUNTS_];
+		if( NULL == m_pPoiList )
+		{
+			return nuFALSE;
+		}
+		nuMemset(m_pPoiList, 0, sizeof(POINODE)*_POI_MAX_COUNTS_);
+		m_nMaxPoiCount = _POI_MAX_COUNTS_;
+	}
+	else
+	{
+		m_bPriority = nuFALSE;
+		m_pPoiList = (PPOINODE)g_pDMLibMM->MM_GetStaticMemMass(sizeof(POINODE)*g_pDMMapCfg->commonSetting.nMaxPOINameCount);
+		if( m_pPoiList == NULL )
+		{
+			return nuFALSE;
+		}
+		nuMemset(m_pPoiList, 0, sizeof(POINODE)*g_pDMMapCfg->commonSetting.nMaxPOINameCount);
+	}
+	m_pRoadName		= pRoadName;
+	m_pPoiSetting	= pPoiSetting;
+	m_nPoiCount		= g_pDMMapCfg->commonSetting.nMaxPOINameCount;
+	m_nMapType		= nMapType;
+	//
+	if( !nuReadConfigValue("MAXOFSAMEPOIICON", &m_nMaxNumofSameIcon) )
+	{
+		m_nMaxNumofSameIcon = 3;
+	}
+	return nuTRUE;
+} 
+
+nuVOID CPoiName::Free()
+{
+	m_pRoadName	= NULL;
+	if (m_bPriority && m_pPoiList)
+	{
+		delete[] m_pPoiList;
+		m_pPoiList = NULL;
+	}
+
+	m_nPoiCount	= 0;
+	m_nPoiIndex = 0;
+	//
+	if( NULL != m_pPriorityInfo )
+	{
+		for( nuWORD i = 0; i < m_nScaleCount; i++ )
+		{
+			if( NULL != m_pPriorityInfo[i].pPoiPriority )
+			{
+				delete []m_pPriorityInfo[i].pPoiPriority;
+				m_pPriorityInfo[i].pPoiPriority = NULL;
+			}
+		}
+		delete []m_pPriorityInfo;
+		m_pPriorityInfo = NULL;
+	}
+}
+
+#define MAX_NUM_OF_ONETYPE1						3
+#define ICONDIS									16
+#define POI_BAN_CUT								2
+#define POI_HIGH								16
+#define POI_SPECIAL_HIGHT						32
+nuINT CPoiName::AddPoiNode(nuBYTE nType1, nuBYTE nType2, nuBYTE nNameLen, nuWORD nDwIdx, nuDWORD nNameAddr,
+						 nuBYTE nPoiType, nuWORD cityID, nuDWORD nIcon, nuroPOINT ptPos)
+{
+	if( m_bPriority )
+	{
+		return AddPoiNodeEx(nType1, nType2, nNameLen, nDwIdx, nNameAddr, nPoiType, cityID, nIcon, ptPos, 0);
+	}	
+	//
+	if( m_pPoiList == NULL || m_nPoiCount == m_nPoiIndex || m_pPoiSetting == NULL)
+	{
+		return ADD_RES_FULL;
+	}
+	if( nDwIdx == -1 || nNameAddr == -1 || nType1 >= g_pDMMapCfg->commonSetting.nPOIType1Count )
+	{
+		return ADD_RES_FAIL;
+	}
+	NURORECT rtName = {0}, rtScreen = {0};
+	nuINT nFH = m_pPoiSetting[nType1].nFontSize;
+	nuINT nFW = nFH/2;
+	nuBOOL b3Dmode = 0;
+	nuBYTE byMode = 0;
+	byMode = 0;
+	if( m_pPoiSetting[nType1].nShowName )
+	{
+		byMode |= POI_SHOW_NAME;
+	}
+	if( nPoiType || m_pPoiSetting[nType1].nShowIcon )
+	{
+		byMode |= POI_SHOW_ICON;
+	}
+	if( !byMode )
+	{
+		return ADD_RES_FAIL;
+	}
+	if( TypeIsFull(nType1, nType2) )
+	{
+		return ADD_RES_FAIL;
+	} 
+	nuINT nPoiIconH = 0;
+	if( nPoiType )
+	{
+		nPoiIconH = POI_SPECIAL_HIGHT;
+	}
+	else
+	{
+		nPoiIconH = POI_HIGH;
+	}
+	if( m_nMapType == MAP_DEFAULT )
+	{
+		rtScreen.left	= g_pDMGdata->transfData.nBmpLTx + nFW * nNameLen / POI_BAN_CUT;
+		rtScreen.top	= g_pDMGdata->transfData.nBmpLTy + nFH + nPoiIconH;
+		rtScreen.right	= g_pDMGdata->transfData.nBmpLTx + g_pDMGdata->transfData.nBmpWidth - 
+						  nFW * nNameLen * (POI_BAN_CUT - 1) / POI_BAN_CUT;
+		rtScreen.bottom	= g_pDMGdata->transfData.nBmpLTy + g_pDMGdata->transfData.nBmpHeight - 10;
+		b3Dmode = g_pDMGdata->uiSetData.b3DMode;
+		if( b3Dmode )
+		{
+			rtScreen.top += g_pDMGdata->uiSetData.nSkyHeight;
+		}
+		g_pDMLibMT->MT_MapToBmp(ptPos.x, ptPos.y, &ptPos.x, &ptPos.y);
+	}
+	else//Zoom map
+	{
+		rtScreen.left	= 0 + nFW * nNameLen / POI_BAN_CUT;
+		rtScreen.top	= 0 + nFH + nPoiIconH;
+		rtScreen.right	= g_pDMGdata->zoomScreenData.nZoomBmpWidth - nFW * nNameLen * (POI_BAN_CUT - 1) / POI_BAN_CUT;
+		rtScreen.bottom	= g_pDMGdata->zoomScreenData.nZoomBmpHeight;
+		b3Dmode = g_pDMGdata->zoomScreenData.b3DMode;
+		if( b3Dmode )
+		{
+			rtScreen.top += g_pDMGdata->uiSetData.nSkyHeight;
+		}
+		g_pDMLibMT->MT_ZoomMapToBmp(ptPos.x, ptPos.y, &ptPos.x, &ptPos.y);
+	}
+	if( ptPos.y > rtScreen.bottom )
+	{
+		return ADD_RES_FAIL;
+	}
+	if( b3Dmode )
+	{
+		g_pDMLibMT->MT_Bmp2Dto3D(ptPos.x, ptPos.y, m_nMapType);
+	}
+	if( !nuPointInRect(&ptPos, &rtScreen) )
+	{
+		return ADD_RES_FAIL;
+	}
+
+	nuBYTE nIconType = 1;
+	if(nPoiType !=0 && g_pDMGdata->uiSetData.b3DMode)//
+	{
+		nuUINT iLocalIcon = (ptPos.y-g_pDMGdata->uiSetData.nSkyHeight)*5/(rtScreen.bottom-g_pDMGdata->uiSetData.nSkyHeight);
+		//nIcon = cityID*255 + iLocalIcon*255 + nPoiType;
+		switch(iLocalIcon)
+		{
+		case 0:
+			nIcon = 3826;
+			nIconType = 1;
+			break;
+		case 1:
+			nIcon = 4336;
+			nIconType = 3;
+			break;
+		case 2:
+			nIcon = 4846;
+			nIconType = 5;
+			break;
+		case 3:
+			nIcon = 4846;
+			nIconType = 5;
+			break;
+		case 4:
+			nIcon = 4846;
+			nIconType = 5;
+			break;
+		}
+		if(this->m_nMapType == MAP_ZOOM)
+		{
+			nIcon = 4846;
+			nIconType = 5;
+		}
+	}
+
+	rtName.left		= ptPos.x - nNameLen*nFW/2;
+	rtName.right	= ptPos.x + nNameLen*nFW/2;
+	rtName.top		= ptPos.y - nFH - nPoiIconH*(nIconType+3)/4;
+	rtName.bottom	= ptPos.y - nPoiIconH*(nIconType+3)/4;
+
+	if( !CheckPoiRect(rtName, ptPos, &byMode) )
+	{
+		return ADD_RES_FAIL;
+	}
+	if( IsPoiOverlaped(ptPos.x, ptPos.y) )
+	{
+		return ADD_RES_FAIL;
+	}
+	if( m_pRoadName != NULL && (byMode&POI_SHOW_NAME) )
+	{
+		if( m_pRoadName->CheckRect(&rtName) )
+		{
+			byMode &= ~POI_SHOW_NAME;
+		}
+	}
+	
+	m_pPoiList[m_nPoiIndex].nDwIdx	= nDwIdx;
+	m_pPoiList[m_nPoiIndex].nIcon	= nIcon;
+	m_pPoiList[m_nPoiIndex].nMode	= byMode;
+	m_pPoiList[m_nPoiIndex].nNameAddr	= nNameAddr;
+	m_pPoiList[m_nPoiIndex].nType1	= nType1;
+	m_pPoiList[m_nPoiIndex].nType2	= nType2;
+	m_pPoiList[m_nPoiIndex].ptPos	= ptPos;
+	m_pPoiList[m_nPoiIndex].rtNAME	= rtName;
+	m_pPoiList[m_nPoiIndex].nPoiType = nPoiType;
+	m_pPoiList[m_nPoiIndex].nIconType = nIconType;
+	m_nPoiIndex++;
+	return ADD_RES_NEW;
+}
+
+nuBOOL CPoiName::TypeIsFull(nuBYTE nType1, nuBYTE nType2)
+{
+	nuINT nType1Num = 0;
+	for(nuINT i = 0; i < m_nPoiIndex; i++)
+	{
+		if( m_pPoiList[i].nType1 == nType1 )
+		{
+			if(m_pPoiList[i].nPoiType == 0)
+			{
+				nType1Num ++;
+			}
+			if( nType1Num == MAX_NUM_OF_ONETYPE1 )
+			{
+				return nuTRUE;
+			}
+		}
+	}
+	return nuFALSE;
+}
+nuBOOL CPoiName::CheckPoiRect(nuroRECT rect, const NUROPOINT &pt, nuBYTE* pByMode)
+{
+	nuBYTE bDrawName = (*pByMode)&POI_SHOW_NAME;
+	nuBYTE bDrawIcon = (*pByMode)&POI_SHOW_ICON;
+	for(nuINT i = 0; i < m_nPoiIndex; i++)
+	{
+		if( bDrawIcon && (m_pPoiList[i].nMode&POI_SHOW_ICON) )
+		{
+			nuINT len1 = pt.x - m_pPoiList[i].ptPos.x; 
+			nuINT len2 = pt.y - m_pPoiList[i].ptPos.y;
+			len1 = NURO_ABS(len1);
+			len2 = NURO_ABS(len2);
+			if( len1 < ICONDIS*(m_pPoiList[i].nIconType+3)/4 && len2 < ICONDIS*(m_pPoiList[i].nIconType+3)/4 )
+			{
+				return nuFALSE;
+			}
+		}
+		if( bDrawName && (m_pPoiList[i].nMode&POI_SHOW_NAME) )
+		{
+			if( nuRectCoverRect(&rect, &m_pPoiList[i].rtNAME) )
+			{
+				*pByMode = (*pByMode)&(~POI_SHOW_NAME);
+				if( *pByMode )
+				{
+					return nuTRUE;
+				}
+				else
+				{
+					return nuFALSE;
+				}
+			}
+		}
+	}
+	return nuTRUE;
+}
+
+nuVOID CPoiName::ResetPoiList()
+{
+	m_nPoiIndex = 0;
+}
+
+
+#define POIICONSW				32
+#define POIICONSH				32
+
+#define POIICONW				16
+#define POIICONH				16
+nuBOOL CPoiName::DrawPoi()
+{
+	if( m_bPriority )
+	{
+		SelectPoiNode();
+	}
+	if( m_pPoiList == NULL || m_pPoiSetting == NULL || m_nPoiIndex == 0 )
+	{
+		return nuFALSE;
+	}
+	nuWCHAR wsName[NURO_MAX_PATH]={0};
+	nuWORD	nNameLen = sizeof(wsName);//NURO_MAX_PATH;
+	nuBOOL* pBdraw = new nuBOOL[m_nPoiIndex];
+	if( pBdraw == NULL )
+	{
+		return nuFALSE;
+	}
+	nuMemset(pBdraw, 0, sizeof(nuBOOL)*m_nPoiIndex);
+	nuBYTE n3Dmode = 0;
+	nuLONG nInOut = 0;
+	nuINT nOldMode = g_pDMLibGDI->GdiSetBkMode(NURO_TRANSPARENT);
+	nuDWORD nIconSize = 0;
+	if( m_nMapType == MAP_DEFAULT )
+	{
+		n3Dmode = g_pDMGdata->uiSetData.b3DMode;
+	}
+	else
+	{
+		n3Dmode = g_pDMGdata->zoomScreenData.b3DMode;
+	}
+	for(nuINT i = 0; i < m_nPoiIndex; i++)
+	{
+		nuINT j = i;
+		nuLONG nYalue	= 10000;
+		for( nuINT k = 0; k < m_nPoiIndex; k ++ )
+		{
+			if( !pBdraw[k] && m_pPoiList[k].ptPos.y < nYalue )
+			{
+				j = k;
+				nYalue = m_pPoiList[k].ptPos.y;
+			}
+		}
+		if( pBdraw[j] )
+		{
+			continue;
+		}
+		pBdraw[j] = nuTRUE;
+		nIconSize = 0;
+		if( m_pPoiList[j].nMode & POI_SHOW_ICON )
+		{
+			//Draw poi Icon....
+			if( m_pPoiList[j].nPoiType != 0 )
+			{
+				m_drawSpPoi.OpenBmpFile(g_pDMGdata->pTsPath);
+				nIconSize  = m_drawSpPoi.DrawSpPOI(m_pPoiList[j].ptPos.x, 
+					m_pPoiList[j].ptPos.y,
+					m_pPoiList[j].nPoiType);
+			}
+			if( !m_pPoiList[j].nPoiType && !nIconSize )
+			{
+				if( n3Dmode && m_pPoiList[j].ptPos.y < g_pDMGdata->transfData.nBmpHeight/2 ) //Small Poi Icon
+				{
+					nIconSize = g_pDMLibGDI->GdiDrawPoi( m_pPoiList[j].ptPos.x, 
+						m_pPoiList[j].ptPos.y, 
+						m_pPoiList[j].nIcon - POI_ICON_START_NUM, 
+						NURO_RTPOS_CB, nuTRUE ); 
+				}
+				else
+				{
+					nIconSize = g_pDMLibGDI->GdiDrawPoi( m_pPoiList[j].ptPos.x, 
+						m_pPoiList[j].ptPos.y, 
+						m_pPoiList[j].nIcon - POI_ICON_START_NUM, 
+						NURO_RTPOS_CB, nuFALSE );
+				}
+			}
+			/*
+			if(m_pPoiList[j].nPoiType != 0 && g_pDMGdata->uiSetData.b3DMode)
+			{
+				g_pDMLibGDI->GdiDrawIconSp(
+					m_pPoiList[j].ptPos.x - POIICONSW,// - POIICONW*(m_pPoiList[j].nIconType+3)/4,
+					m_pPoiList[j].ptPos.y - POIICONSW,// - POIICONH*(m_pPoiList[j].nIconType+3)/4,
+					m_pPoiList[j].nIcon,
+					g_pDMGdata->uiSetData.bNightOrDay);
+			}
+			else
+			{
+				g_pDMLibGDI->GdiDrawIcon( 
+					m_pPoiList[j].ptPos.x - POIICONW, 
+					m_pPoiList[j].ptPos.y - POIICONH,
+					m_pPoiList[j].nIcon );
+			}
+			*/
+		}
+		if( (m_pPoiList[j].nMode & POI_SHOW_NAME) &&
+			g_pDMLibFS->FS_GetPoiName(m_pPoiList[j].nDwIdx, m_pPoiList[j].nNameAddr, wsName, &nNameLen) )
+		{
+			//Draw poi Name....
+			NURORECT rtText  = {0};
+			rtText = m_pPoiList[j].rtNAME;
+			if( g_pDMLibMT->MT_SelectObject(DRAW_TYPE_POI_FONT, n3Dmode, &m_pPoiSetting[m_pPoiList[j].nType1], &nInOut) != DRAW_OBJ_POINAME )
+			{
+				continue;
+			}
+			nuBOOL bDrawRim = (nuBOOL)m_pPoiSetting[m_pPoiList[j].nType1].nFontBgTransparent;
+			nuCOLORREF nRimClr = nuRGB(m_pPoiSetting[m_pPoiList[j].nType1].nFontBgColorR,
+				m_pPoiSetting[m_pPoiList[j].nType1].nFontBgColorG,
+				m_pPoiSetting[m_pPoiList[j].nType1].nFontBgColorB );
+			g_pDMLibGDI->GdiDrawTextW(wsName, -1, &rtText, NURO_DT_CENTER | NURO_DT_CALCRECT | NURO_DT_SINGLELINE);
+			nuLONG len = rtText.right - rtText.left;
+			if( m_pPoiList[j].nPoiType != 0 )
+			{
+				rtText.left		= m_pPoiList[j].ptPos.x - len/2;
+				rtText.right	= rtText.left + len;
+			}
+			else
+			{
+				rtText.left		= m_pPoiList[j].ptPos.x - len/2;// - POIICONW/2;
+				rtText.right	= rtText.left + len;// - POIICONW/2;
+			}
+			len = rtText.bottom - rtText.top;
+			/*if (0 == nuWcscmp("

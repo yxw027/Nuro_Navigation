@@ -1,0 +1,828 @@
+// GdiMethodZK.cpp: implementation of the CGdiMethodZK class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "GdiMethodZK.h"
+#include "nuRotaryClip.h"
+
+#ifdef NURO_USE_BMPLIB3
+#include "nuBMPlib3.h"
+#endif
+
+#ifdef NURO_USE_BMPLIB3_3DLINE
+#include "nuBMPlib3.h"
+#endif
+
+NrBitmap8D2::NrBitmap8D2()
+{
+    width_ = 0;
+    height_ = 0;
+    bytesperline_ = 0;
+    buffer_ = 0;
+}
+NrBitmap8D2::~NrBitmap8D2()
+{
+    Destroy();
+}
+nuVOID NrBitmap8D2::Destroy()
+{
+    width_ = 0;
+    height_ = 0;
+    bytesperline_ = 0;
+    if (1==type_)
+    {
+        nuFree(buffer_);
+    }
+    buffer_ = 0;
+}
+nuBOOL NrBitmap8D2::Create(nuINT width, nuINT height)
+{
+    if (buffer_)
+    {
+        Destroy();
+    }
+    buffer_ = (nuBYTE*) nuMalloc(width*height);
+    if (!buffer_)
+    {
+        return false;
+    }
+    type_ = 1;
+    width_ = width;
+    bytesperline_ = width_;
+    height_ = height;
+    return nuTRUE;
+}
+nuBOOL NrBitmap8D2::CreateFromBuffer(nuINT width, nuINT height, nuVOID* buffer)
+{
+    if (buffer_)
+    {
+        Destroy();
+    }
+    width_ = width;
+    bytesperline_ = width_;
+    height_ = height;
+    buffer_ = (nuBYTE*)buffer;
+    return nuTRUE;
+}
+nuBOOL NrBitmap8D2::CopyTo(NrBitmap8D2* dstbmp, nuINT dstx, nuINT dsty, nuINT srcx, nuINT srcy, nuINT srcw, nuINT srch)
+{
+    if (!buffer_ || !dstbmp || !dstbmp->buffer_)
+    {
+        return false;
+    }
+    if (!CGdiMethodZK::nrAreaCoverClip(dstbmp->width(), dstbmp->height(), width_, height_, dstx, dsty, srcx, srcy, srcw, srch))
+    {
+        return false;
+    }
+    nuBYTE* pDstLineData = dstbmp->LineData(dsty);
+    nuBYTE* pSrcLineData = this->LineData(srcy);
+    nuINT y = 0;
+    for (y=0; y<srch; ++y)
+    {
+        nuMemcpy(&pDstLineData[dstx], &pSrcLineData[srcx], srcw);
+        pDstLineData += dstbmp->bytesperline();
+        pSrcLineData += bytesperline_;
+    }
+    return nuTRUE;
+}
+nuBOOL NrBitmap8D2::RenderTest(NURO_BMP* dstbmp, nuINT x0, nuINT y0, nuroColor& color)
+{
+    nuINT x=0;
+    nuINT y=0;
+    nuBYTE bytevalue=0;
+    for (y=0; y<height_; ++y)
+    {
+        for (x=0; x<width_; ++x)
+        {
+            bytevalue = this->GetPixel(x, y);
+            if (bytevalue)
+            {
+                CGdiMethodZK::nuBMPSetPixel565(dstbmp, x0+x, y0+y, nuRGB24TO16_565(color.RValue(), color.GValue(), color.BValue()), NURO_BMP_TYPE_COPY);
+            }
+        }
+    }
+    return nuTRUE;
+}
+nuBOOL NrBitmap8D2::RenderOut(NURO_BMP* dstbmp, nuINT x0, nuINT y0, nuroColor& color, nuBOOL useEdge, nuroColor& edgecolor)
+{
+    nuINT x=0;
+    nuINT y=0;
+    nuBYTE bytevalue=0;
+    nuBYTE* linedata = LineData(0);
+    for (y=0; y<height_; ++y)
+    {
+        for (x=0; x<width_; ++x)
+        {
+            bytevalue = linedata[x];
+            if (bytevalue)
+            {
+                nuCOLORREF oldColor = CGdiMethodZK::nuBMPGetPixel(dstbmp, x0+x, y0+y);
+                nuINT t_edge = bytevalue&0x0f;
+                nuINT t = bytevalue>> 4;
+                nuINT realR = nuGetRValue(oldColor);
+                nuINT realG = nuGetGValue(oldColor);
+                nuINT realB = nuGetBValue(oldColor);
+                if (useEdge && t_edge)
+                {                    
+                    realR = (edgecolor.RValue()*t_edge+realR*(15-t_edge) )/15;
+                    realG = (edgecolor.GValue()*t_edge+realG*(15-t_edge) )/15;
+                    realB = (edgecolor.BValue()*t_edge+realB*(15-t_edge) )/15;
+                }
+                if (t)
+                {
+                    realR = (color.RValue()*t+realR*(15-t) )/15;
+                    realG = (color.GValue()*t+realG*(15-t) )/15;
+                    realB = (color.BValue()*t+realB*(15-t) )/15;
+                }
+                CGdiMethodZK::nuBMPSetPixel565(dstbmp, x0+x, y0+y, nuRGB24TO16_565(realR, realG, realB), NURO_BMP_TYPE_COPY);
+            }
+        }
+        linedata += bytesperline_;
+    }
+    return nuTRUE;
+}
+nuBOOL NrBitmap8D2::RenderOutZoom0(NURO_BMP* pDesBmp, nuINT desx, nuINT desy, float scalex, float scaley
+                                 , nuroColor& color, nuBOOL useEdge, nuroColor& edgecolor)
+{
+    
+    if (scalex<=0
+        || scaley<=0
+        || desx>=pDesBmp->bmpWidth
+        || desy>=pDesBmp->bmpHeight)
+    {
+        return false;
+    }
+    nuINT desw = (nuINT)(width_ * scalex);
+    nuINT desh = (nuINT)(height_* scaley);
+    nuLONG xrIntFloat_16= (width_<<16)/desw+1;
+    nuLONG yrIntFloat_16= (height_<<16)/desh+1;
+    nuWORD* pDstLine = 0;
+    nuBYTE* pSrcLine = 0;    
+    nuLONG y_16 = 0;
+    nuWORD transColor = nuLOWORD(pDesBmp->bmpTransfColor);//nuLOWORD(NURO_BMP_TRANSCOLOR_565);
+    long bytesWidthDes = CGdiMethodZK::nuBMP565BytesPerLine(pDesBmp);
+    long bytesWidthSrc = bytesperline_;
+    for (nuLONG y=0; y<desh; ++y)
+    {
+        if ( CGdiMethodZK::nuBMP565InY(pDesBmp, desy+y) )
+        {
+            pDstLine = CGdiMethodZK::nuBMP565LineData(pDesBmp, desy+y);
+            pSrcLine = LineData(y_16>>16);
+            nuLONG x_16 = 0;
+            for (nuLONG x=0; x<desw; ++x)
+            {
+                if ( CGdiMethodZK::nuBMP565InX(pDesBmp, desx+x) )
+                {
+                    
+                    if (pSrcLine[x_16>>16])
+                    {
+                        nuCOLORREF oldColor = CGdiMethodZK::nuBMPGetPixel(pDesBmp, desx+x, desy+y);
+                        nuINT t_edge = pSrcLine[x_16>>16]&0x0f;
+                        nuINT t = pSrcLine[x_16>>16]>> 4;
+                        nuINT realR = nuGetRValue(oldColor);
+                        nuINT realG = nuGetGValue(oldColor);
+                        nuINT realB = nuGetBValue(oldColor);
+                        if (useEdge && t_edge)
+                        {                            
+                            realR = (edgecolor.RValue()*t_edge+realR*(15-t_edge) )/15;
+                            realG = (edgecolor.GValue()*t_edge+realG*(15-t_edge) )/15;
+                            realB = (edgecolor.BValue()*t_edge+realB*(15-t_edge) )/15;
+                        }
+                        if (t)
+                        {
+                            ++t;
+                            realR = (color.RValue()*t+realR*(16-t) )/16;
+                            realG = (color.GValue()*t+realG*(16-t) )/16;
+                            realB = (color.BValue()*t+realB*(16-t) )/16;
+                        }
+                        CGdiMethodZK::nuBMPSetPixel565(pDesBmp, desx+x, desy+y, nuRGB24TO16_565(realR, realG, realB), NURO_BMP_TYPE_COPY);
+                    }
+                }
+                x_16 += xrIntFloat_16;
+            }
+        }
+        y_16 += yrIntFloat_16;
+    }
+    return nuTRUE;
+}
+nuVOID NrBitmap8D2::Bilinear2Color(nuBYTE* PColor0,nuBYTE* PColor1,unsigned long u_16,unsigned long v_16
+                                 , nuWORD* result, nuroColor& colorDefault
+                                 , nuroColor& color, nuBOOL useEdge, nuroColor& edgecolor)
+{
+    unsigned long pm3_16=(u_16>>8)*(v_16>>8);
+    unsigned long pm2_16=u_16 - pm3_16;
+    unsigned long pm1_16=v_16 - pm3_16;
+    unsigned long pm0_16=(1<<16)-pm1_16-pm2_16-pm3_16;
+    nuINT realR = colorDefault.RValue();
+    nuINT realG = colorDefault.GValue();
+    nuINT realB = colorDefault.BValue();
+    nuINT t_edge = 0;
+    nuINT t = 0;
+    if (useEdge)
+    {
+        t_edge = (PColor0[0]&0x0f) * pm0_16
+            + (PColor0[1]&0x0f) * pm2_16
+            + (PColor1[0]&0x0f) * pm1_16
+            + (PColor1[1]&0x0f) * pm3_16;
+        t_edge = t_edge >> 16;
+        if (t_edge)
+        {
+            realR = (edgecolor.RValue()*t_edge+realR*(15-t_edge) )/15;
+            realG = (edgecolor.GValue()*t_edge+realG*(15-t_edge) )/15;
+            realB = (edgecolor.BValue()*t_edge+realB*(15-t_edge) )/15;
+        }
+    }    
+    t = (PColor0[0]>>4) * pm0_16
+        + (PColor0[1]>>4) * pm2_16
+        + (PColor1[0]>>4) * pm1_16
+        + (PColor1[1]>>4) * pm3_16;
+    t = t>>16;
+    if (t)
+    {
+        ++t;
+        realR = (color.RValue()*t+realR*(16-t) )/16;
+        realG = (color.GValue()*t+realG*(16-t) )/16;
+        realB = (color.BValue()*t+realB*(16-t) )/16;
+    }
+    *result = nuRGB24TO16_565(realR, realG, realB);
+}
+nuVOID NrBitmap8D2::Bilinear2BorderColor(const long x_16,const long y_16,nuWORD* result, nuroColor& colorDefault
+                                       , nuroColor& color, nuBOOL useEdge, nuroColor& edgecolor)
+{
+    
+    nuroColor color2;
+    nuINT a = sizeof(nuroColor);
+    
+    long x=(x_16>>16);
+    long y=(y_16>>16);
+    unsigned long u_16=((unsigned short)(x_16));
+    unsigned long v_16=((unsigned short)(y_16));
+    
+    nuBYTE bytevalue[4];
+    bytevalue[0] = GetPixel(x, y);
+    bytevalue[1] = GetPixel(x+1, y);
+    bytevalue[2] = GetPixel(x, y+1);
+    bytevalue[3] = GetPixel(x+1, y+1);
+    
+    Bilinear2Color(&bytevalue[0],&bytevalue[2],u_16,v_16,result, colorDefault
+        , color, useEdge, edgecolor);
+}
+nuBOOL NrBitmap8D2::RenderOutZoomBilinear2(NURO_BMP* pDesBmp
+                                         , nuINT desx
+                                         , nuINT desy
+                                         , float scalex
+                                         , float scaley
+                                         , nuroColor& color
+                                         , nuBOOL useEdge
+                                         , nuroColor& edgecolor)
+{
+    nuINT desw = (nuINT)(width_ * scalex);
+    nuINT desh = (nuINT)(height_* scaley);
+    
+    long xrIntFloat_16=(width_<<16)/desw+1; 
+    long yrIntFloat_16=(height_<<16)/desh+1;
+    const long csDErrorX=-(1<<15)+(xrIntFloat_16>>1);
+    const long csDErrorY=-(1<<15)+(yrIntFloat_16>>1);
+    
+    long border_y0 = -csDErrorY/yrIntFloat_16+1;
+    if (border_y0>=desh)
+        border_y0 = desh;
+    long border_x0 = -csDErrorX/xrIntFloat_16+1;
+    if (border_x0>=desw ) 
+        border_x0=desw;
+    long border_y1=(((height_-2)<<16)-csDErrorY)/yrIntFloat_16+1;
+    if (border_y1<border_y0)
+        border_y1=border_y0;
+    long border_x1=(((width_-2)<<16)-csDErrorX)/xrIntFloat_16+1; 
+    if (border_x1<border_x0) 
+        border_x1=border_x0;
+    
+    nuWORD* pDesLine = (nuWORD*)pDesBmp->pBmpBuff;
+    long bytesWidthDes = CGdiMethodZK::nuBMP565BytesPerLine(pDesBmp);
+    long bytesWidthSrc = bytesperline_;
+    long srcy_16=csDErrorY;
+    long y = 0;
+    long x = 0;
+    nuroColor tmpcolor;
+    ((nuBYTE*&)pDesLine) += bytesWidthDes*desy;
+    for (y=0;y<border_y0;++y)
+    {
+        if (CGdiMethodZK::nuBMP565InY(pDesBmp, desy+y))
+        {
+            long srcx_16=csDErrorX;
+            for (x=0;x<desw;++x)
+            {
+                if ( !CGdiMethodZK::nuBMP565InX(pDesBmp, desx+x) )
+                {
+                    srcx_16+=xrIntFloat_16;
+                    continue;
+                }
+                tmpcolor.SetValue(pDesLine[x+desx], nuroColor::COLORTYPE_RGB565);
+                Bilinear2BorderColor(srcx_16,srcy_16,&pDesLine[x+desx], tmpcolor, color, useEdge, edgecolor);
+                srcx_16+=xrIntFloat_16;
+            }
+        }
+        srcy_16+=yrIntFloat_16;
+        ((nuBYTE*&)pDesLine)+=bytesWidthDes;
+    }
+    for (y=border_y0; y<border_y1; ++y)
+    {
+        if (!CGdiMethodZK::nuBMP565InY(pDesBmp, desy+y))
+        {
+            srcy_16+=yrIntFloat_16;
+            ((nuBYTE*&)pDesLine)+=bytesWidthDes;
+            continue;
+        }
+        long srcx_16=csDErrorX;
+        for (x=0; x<border_x0; ++x)
+        {
+            if ( CGdiMethodZK::nuBMP565InX(pDesBmp, desx+x) )
+            {
+                tmpcolor.SetValue(pDesLine[x+desx], nuroColor::COLORTYPE_RGB565);
+                Bilinear2BorderColor(srcx_16,srcy_16,&pDesLine[x+desx], tmpcolor, color, useEdge, edgecolor);
+            }
+            srcx_16+=xrIntFloat_16;
+        }
+        unsigned long v_16=(srcy_16 & 0xFFFF);
+        nuBYTE* PSrcLineColor= LineData(srcy_16>>16);
+        for (x=border_x0; x<border_x1; ++x)
+        {
+            if ( CGdiMethodZK::nuBMP565InX(pDesBmp, desx+x) )
+            {
+                nuBYTE* PColor0=&PSrcLineColor[srcx_16>>16];
+                nuBYTE* PColor1=PColor0+bytesWidthSrc;
+                tmpcolor.SetValue(pDesLine[x+desx], nuroColor::COLORTYPE_RGB565);
+                Bilinear2Color(PColor0, PColor1, (srcx_16 & 0xFFFF),v_16,&pDesLine[x+desx], tmpcolor
+                    , color, useEdge, edgecolor);
+                
+            }
+            srcx_16+=xrIntFloat_16;
+        }
+        for (x=border_x1;x<desw;++x)
+        {
+            if ( CGdiMethodZK::nuBMP565InX(pDesBmp, desx+x) )
+            {
+                tmpcolor.SetValue(pDesLine[x+desx], nuroColor::COLORTYPE_RGB565);
+                Bilinear2BorderColor(srcx_16,srcy_16,&pDesLine[x+desx], tmpcolor
+                    , color, useEdge, edgecolor);
+            }
+            srcx_16+=xrIntFloat_16;
+        }
+        srcy_16+=yrIntFloat_16;
+        ((nuBYTE*&)pDesLine)+=bytesWidthDes;
+    }
+    for (y=border_y1;y<desh;++y)
+    {
+        if (CGdiMethodZK::nuBMP565InY(pDesBmp, desy+y))
+        {
+            long srcx_16=csDErrorX;
+            for (x=0;x<desw;++x)
+            {
+                if ( CGdiMethodZK::nuBMP565InX(pDesBmp, desx+x) )
+                {
+                    tmpcolor.SetValue(pDesLine[x+desx], nuroColor::COLORTYPE_RGB565);
+                    Bilinear2BorderColor(srcx_16,srcy_16,&pDesLine[x+desx], tmpcolor
+                        , color, useEdge, edgecolor);                   
+                }
+                srcx_16+=xrIntFloat_16;
+            }
+        }
+        srcy_16+=yrIntFloat_16;
+        ((nuBYTE*&)pDesLine)+=bytesWidthDes;
+    }
+    return nuTRUE;
+}
+nuVOID NrBitmap8D2::RotaryBilinear2Line(nuWORD* pDstLine,long dst_border_x0,long dst_in_x0,long dst_in_x1,long dst_border_x1
+                                      , long srcx0_16,long srcy0_16,long Ax_16,long Ay_16                                 
+                                      , nuroColor& color
+                                      , nuBOOL useEdge
+                                      , nuroColor& edgecolor)
+{
+    nuroColor tmpcolor;
+    for (long x=dst_border_x0;x<dst_border_x1;++x)
+    {
+        tmpcolor.SetValue(pDstLine[x], nuroColor::COLORTYPE_RGB565);
+        Bilinear2BorderColor(srcx0_16,srcy0_16,&pDstLine[x], tmpcolor
+            , color, useEdge, edgecolor);
+        srcx0_16+=Ax_16;
+        srcy0_16+=Ay_16;
+    }
+}
+nuVOID NrBitmap8D2::RenderOutRotaryBilinear2(const PNURO_BMP pDstBmp
+                                           , long centerx
+                                           , long centery
+                                           , long centernewx
+                                           , long centernewy  
+                                           , long RotaryAngle
+                                           , double ZoomX
+                                           , double ZoomY                     
+                                           , nuroColor& color
+                                           , nuBOOL useEdge
+                                           , nuroColor& edgecolor)
+{    
+    double tmprZoomXY=1.0/(ZoomX*ZoomY);
+    double rZoomX=tmprZoomXY*ZoomY;
+    double rZoomY=tmprZoomXY*ZoomX;
+    double sinA = nuSin(RotaryAngle);
+    double cosA = nuCos(RotaryAngle);
+    long Ax_16=(long)(rZoomX*cosA*(1<<16)); 
+    long Ay_16=(long)(rZoomX*sinA*(1<<16)); 
+    long Bx_16=(long)(-rZoomY*sinA*(1<<16));
+    long By_16=(long)(rZoomY*cosA*(1<<16));
+    long Cx_16=(long)((-centernewx*rZoomX*cosA+centernewy*rZoomY*sinA+centerx)*(1<<16));
+    long Cy_16=(long)((-centernewx*rZoomX*sinA-centernewy*rZoomY*cosA+centery)*(1<<16)); 
+    TRotaryClipData rcData;
+    rcData.Ax_16=Ax_16;
+    rcData.Bx_16=Bx_16;
+    rcData.Cx_16=Cx_16;
+    rcData.Ay_16=Ay_16;
+    rcData.By_16=By_16;
+    rcData.Cy_16=Cy_16;
+    rcData.dst_width=pDstBmp->bmpWidth;
+    rcData.dst_height=pDstBmp->bmpHeight;
+    rcData.src_width=width_;
+    rcData.src_height=height_;
+    if (!rcData.inti_clip(centernewx,centernewy,1)) 
+    {
+        return;
+    }
+    nuLONG bytesWidthDst = CGdiMethodZK::nuBMP565BytesPerLine(pDstBmp);
+    nuWORD* pDstLine= (nuWORD*)pDstBmp->pBmpBuff;
+    ((nuBYTE*&)pDstLine)+=(bytesWidthDst*rcData.out_dst_down_y);
+    while (nuTRUE) //to down
+    {
+        long y=rcData.out_dst_down_y;
+        if (y>=pDstBmp->bmpHeight) break;
+        if (y>=0)
+        {
+            RotaryBilinear2Line(pDstLine,rcData.out_dst_x0_boder,rcData.out_dst_x0_in,
+                rcData.out_dst_x1_in,rcData.out_dst_x1_boder
+                ,rcData.out_src_x0_16,rcData.out_src_y0_16,Ax_16,Ay_16
+                , color, useEdge, edgecolor);
+        }
+        if (!rcData.next_clip_line_down()) break;
+        ((nuBYTE*&)pDstLine)+=bytesWidthDst;
+    }    
+    pDstLine= (nuWORD*)pDstBmp->pBmpBuff;
+    ((nuBYTE*&)pDstLine)+=(bytesWidthDst*rcData.out_dst_up_y);
+    while (rcData.next_clip_line_up()) //to up 
+    {
+        long y=rcData.out_dst_up_y;
+        if (y<0) break;
+        ((nuBYTE*&)pDstLine)-=bytesWidthDst;
+        if (y<pDstBmp->bmpHeight)
+        {
+            RotaryBilinear2Line(pDstLine,rcData.out_dst_x0_boder,rcData.out_dst_x0_in,
+                rcData.out_dst_x1_in,rcData.out_dst_x1_boder
+                ,rcData.out_src_x0_16,rcData.out_src_y0_16,Ax_16,Ay_16
+                , color, useEdge, edgecolor);
+        }
+    }
+}
+nuVOID NrBitmap8D2::FillColor(nuBYTE color8)
+{
+    if (color8)
+    {
+        return;
+    }
+    nuMemset(buffer_, 0, bytesperline_*height_);
+    return;
+}
+
+CGdiMethodZK::CGdiMethodZK()
+{
+    
+}
+
+CGdiMethodZK::~CGdiMethodZK()
+{
+    
+}
+
+nuBOOL CGdiMethodZK::Initialize()
+{
+    return nuTRUE;
+}
+
+nuVOID CGdiMethodZK::Free()
+{
+    ;
+}
+nuVOID CGdiMethodZK::BmpLineTCopy(nuWORD* pClrDes, nuWORD* pClrSrc, nuINT nPixelNum, nuINT nMode)
+{
+    for(nuINT i = 0; i < nPixelNum; ++i)
+    {
+//        BmpSetPixel(&pClrDes[i], pClrSrc[i], nMode);
+        BmpSetPixel(pClrDes, *pClrSrc, nMode);
+        ++pClrDes;
+        ++pClrSrc;
+    }
+}
+
+nuBOOL CGdiMethodZK::nrAreaCoverClip(nuINT dstwidth, nuINT dstheight, nuINT srcwidth, nuINT srcheight
+                                    , nuINT& dstx, nuINT& dsty, nuINT& srcx, nuINT& srcy, nuINT& srcw, nuINT& srch)
+{    
+    if ( srcx>=srcwidth
+        || srcy>=srcheight 
+        || (dstx>=dstwidth)
+        || (dsty>=dstheight)
+        || srcw<=0 
+        || srch<=0  )
+    {
+        return false;
+    }
+    if (srcx<0)
+    {
+        srcw += srcx;
+        if (srcw<=0)
+        {
+            return false;
+        }
+        srcx = 0;
+    }
+    if ( (srcx+srcw)>srcwidth )
+    {
+        srcw = srcwidth - srcx;
+    }
+    if (srcy<0)
+    {
+        srch += srcy;
+        if (srch<=0)
+        {
+            return false;
+        }
+        srcy = 0;
+    }
+    if ( (srcy+srch)>srcheight )
+    {
+        srch = srcheight - srcy;
+    }
+    if ( ((dstx+srcw)<0 )
+        || ((dsty+srch)<0) )
+    {
+        return false;
+    }
+    if (dstx<0)
+    {
+        srcx -= dstx;
+        if (srcx>=srcwidth)
+        {
+            return false;
+        }
+        srcw += dstx;
+        dstx = 0;
+    }
+    if ( (dstx+srcw)>dstwidth )
+    {
+        srcw = dstwidth-dstx;
+        if (srcw<=0)
+        {
+            return false;
+        }
+    }    
+    if (dsty<0)
+    {
+        srcy -= dsty;
+        if (srcy>=srcheight)
+        {
+            return false;
+        }
+        srch += dsty;
+        dsty = 0;
+    }
+    if ( (dsty+srch)>dstheight )
+    {
+        srch = dstheight-dsty;
+        if (srch<=0)
+        {
+            return false;
+        }
+    }
+    return nuTRUE;
+}
+
+nuBOOL CGdiMethodZK::nuGMCopyBmp( PNURO_BMP pDesBmp, 
+                   nuINT nDesX, 
+                   nuINT nDesY, 
+                   nuINT nWidth, 
+                   nuINT nHeight, 
+                   const NURO_BMP* pSrcBmp, 
+                   nuINT nSrcX, 
+                   nuINT nSrcY,
+                   nuINT mode)
+{
+    if( nWidth <= 0		|| 
+        nHeight <= 0	|| 
+        !CGdiMethodZK::BmpDrawCheck( pDesBmp,
+        nDesX,
+        nDesY,
+        nWidth,
+        nHeight,
+        pSrcBmp,
+        nSrcX,
+        nSrcY) ) 
+    {
+        return false;
+    }
+    if( mode != NURO_BMP_TYPE_COPY)
+    {
+        return CGdiMethodZK::BmpTCopy( pDesBmp, 
+            nDesX,
+            nDesY,
+            nWidth,
+            nHeight,
+            pSrcBmp,
+            nSrcX,
+            nSrcY,
+            mode);
+    }
+    else
+    {
+        return CGdiMethodZK::BmpCopy( pDesBmp, 
+									   nDesX,
+                                       nDesY, 
+                                       nWidth,
+                                       nHeight,
+                                       pSrcBmp,
+                                       nSrcX,
+                                       nSrcY );
+    }
+}
+
+nuBOOL CGdiMethodZK::nuGMPaintBmp( PNURO_BMP pDesBmp,
+                    nuINT nDesX,
+                    nuINT nDesY,
+                    nuINT nWidth,
+                    nuINT nHeight,
+                    const PNURO_BMP pSrcBmp,
+                    nuINT nSrcX, 
+                    nuINT nSrcY ,
+                    nuINT mode)
+{
+    /*if( nWidth <= 0		|| 
+        nHeight <= 0	|| 
+        !CGdiMethodZK::BmpDrawCheck( pDesBmp,
+        nDesX,
+        nDesY,
+        nWidth,
+        nHeight,
+        pSrcBmp,
+        nSrcX,
+        nSrcY) ) 
+    {	
+        return false;
+    }*/
+    if( mode != NURO_BMP_TYPE_COPY)
+    {
+        return CGdiMethodZK::BmpTPaint( pDesBmp, 
+            nDesX,
+            nDesY,
+            nWidth,
+            nHeight,
+            pSrcBmp,
+            nSrcX,
+            nSrcY,
+            mode);
+    }
+    else
+    {
+        return CGdiMethodZK::BmpPaint( pDesBmp, 
+            nDesX,
+            nDesY, 
+            nWidth,
+            nHeight,
+            pSrcBmp,
+            nSrcX,
+            nSrcY );
+    }
+}
+nuBOOL CGdiMethodZK::BmpCopy( PNURO_BMP pDesBmp, 
+							 nuINT nDesX, 
+							 nuINT nDesY, 
+							 nuINT width, 
+							 nuINT height, 
+							 const NURO_BMP* pSrcBmp, 
+							 nuINT nSrcX, 
+							 nuINT nSrcY )
+{
+// 	nuBYTE* sr1;
+// 	nuBYTE*	de1;
+	nuWORD i1,i2;
+	nuINT usew = width*2;
+	nuINT maxdh = nDesY+height;
+	nuINT maxsh = nSrcY+height;
+	nuBYTE* sbase = pSrcBmp->pBmpBuff + nSrcY * pSrcBmp->bytesPerLine + (nSrcX<<1);
+	nuBYTE* dbase = pDesBmp->pBmpBuff + nDesY * pDesBmp->bytesPerLine + (nDesX<<1);
+	for(i1=nDesY,i2=nSrcY; (i1<maxdh)&&(i2<maxsh); ++i1,++i2)
+	{
+// 		sr1 = sbase + i2*pSrcBmp->bytesPerLine;
+// 		de1 = dbase + i1*pDesBmp->bytesPerLine;
+		nuMemcpy(dbase, sbase, usew);
+        sbase += pSrcBmp->bytesPerLine;
+        dbase += pDesBmp->bytesPerLine;
+    }
+	return nuTRUE;
+}
+
+nuBOOL CGdiMethodZK::BmpTCopy( PNURO_BMP pDesBmp, 
+							  nuINT nDesX, 
+							  nuINT nDesY, 
+							  nuINT width, 
+							  nuINT height, 
+							  const NURO_BMP* pSrcBmp, 
+							  nuINT nSrcX, 
+							  nuINT nSrcY,
+                              nuINT mode)
+{
+#ifdef _NURO_TEST
+	CFileLogZK logFile;
+	logFile.LogOpen(TEXT("test.log"), TEXT("ab+"));
+	DWORD nTick = GetTickCount();
+#endif
+	nuWORD i1,i2,j1,j2;
+	nuWORD *pColor16Src = (nuWORD*)pSrcBmp->pBmpBuff + ((nSrcY * pSrcBmp->bytesPerLine)>>1) + nSrcX;
+	nuWORD *pColor16Des = (nuWORD*)pDesBmp->pBmpBuff + ((nDesY * pDesBmp->bytesPerLine)>>1) + nDesX;
+	nuINT maxdh = nDesY+height;
+	nuINT maxsh = nSrcY+height;
+	nuINT maxdw = nDesX+width;
+	nuINT maxsw = nSrcX+width;
+    nuINT nextdw = (pDesBmp->bytesPerLine>>1) - width;
+    nuINT nextsw = (pSrcBmp->bytesPerLine>>1) - width;
+    if (NURO_BMP_TYPE_MIXX == mode)
+    {
+        nuINT count = 0;
+        for(i1=nDesY,i2=nSrcY; (i1<maxdh)&&(i2<maxsh); ++i1,++i2)
+        {
+            count = 0;
+            for(j1=nDesX,j2=nSrcX;(j1<maxdw)&&(j2<maxsw);++j1,++j2)
+            {
+                if( pColor16Src[count] != pSrcBmp->bmpTransfColor )
+                {
+                    ++count;
+                }
+                else
+                {
+                    if (count)
+                    {
+                        nuMemcpy(pColor16Des, pColor16Src, count<<1);
+                        pColor16Des += count;
+                        pColor16Src += count;
+                        count = 0;
+                    }
+                    ++pColor16Des;
+                    ++pColor16Src;
+                }
+            }
+            if (count)
+            {
+                nuMemcpy(pColor16Des, pColor16Src, count<<1);
+                pColor16Des += count;
+                pColor16Src += count;
+                count = 0;
+            }
+            pColor16Src += nextsw;
+            pColor16Des += nextdw;
+	    }
+    }
+    else
+    {
+        for(i1=nDesY,i2=nSrcY; (i1<maxdh)&&(i2<maxsh); ++i1,++i2)
+        {
+            for(j1=nDesX,j2=nSrcX;(j1<maxdw)&&(j2<maxsw);++j1,++j2)
+            {
+                /*            if( pColor16Src[j2] != pSrcBmp->bmpTransfColor )*/
+                if( *pColor16Src != pSrcBmp->bmpTransfColor )
+                {
+                    /*				BmpSetPixel(&pColor16Des[j1], pColor16Src[j2], mode);*/
+                    BmpSetPixel(pColor16Des, *pColor16Src, mode);
+                }
+                ++pColor16Des;
+                ++pColor16Src;
+            }
+            pColor16Src += nextsw;
+            pColor16Des += nextdw;
+            //         pColor16Des = (nuWORD*)( (nuBYTE*)pColor16Des + pDesBmp->bytesPerLine);
+            //         pColor16Src = (nuWORD*)( (nuBYTE*)pColor16Src + pSrcBmp->bytesPerLine);
+	    }
+    }
+#ifdef _NURO_TEST
+	nTick = GetTickCount() - nTick;
+	fwprintf(logFile.m_pFile, L"T Bmp Times = %d ms\r\n", nTick);
+	logFile.LogClose();
+#endif
+	return nuTRUE;
+}
+
+nuBOOL CGdiMethodZK::BmpPaint( PNURO_BMP pDesBmp, 
+							  nuINT nDesX, 
+							  nuINT nDesY, 
+							  nuINT nWidth, 
+							  nuINT nHeight, 
+							  const PNURO_BMP pSrcBmp, 
+							  nuINT nSrcX, 
+							  nuINT nSrcY )
+{
+	nuINT nDesYto = nDesY + nHeight;
+	nDesYto  = NURO_MIN( nDesYto,  pDesBmp->bmpHeight );
+	
+	if( nDesY < 0 )//????Y???

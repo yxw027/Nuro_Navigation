@@ -1,0 +1,129 @@
+  // Copyright (c) 2005 PLink Corp.  All rights reserved.
+// $Author: daniel $
+// $Date: 2011/06/09 10:44:19 $
+// $Revision: 1.95 $
+
+#include "stdAfxRoute.h"
+#include "Class_CalRouting.h"
+#include "AllSystemDataBase.h"
+#include "ConstSet.h"
+
+#define MaxNextCrossCount	30
+
+Class_CalRouting::Class_CalRouting()
+{
+	m_nRTSTARTSAMECLASSROAD = 0;
+	m_nRTFINDRTIDX		= 0;
+	if(!nuReadConfigValue( "RTSTARTSAMECLASSROAD", &m_nRTSTARTSAMECLASSROAD))
+	{
+		m_nRTSTARTSAMECLASSROAD = 6000;
+	}
+	if(!nuReadConfigValue( "RTFINDRTIDX", &m_nRTFINDRTIDX))
+	{
+		m_nRTFINDRTIDX = 0;
+	}
+	if(!nuReadConfigValue( "RTSLEEP", &m_nRTSleep))
+	{
+	#ifdef ANDROID
+		m_nRTSleep = TOBESLEEPTIMER;
+	#else
+		m_nRTSleep = 0;
+	#endif
+	}
+	m_MapIDtoMapIdx.MapIDList  = NULL;
+	m_MapIDtoMapIdx.MapIdxList = NULL;
+	m_MapIDtoMapIdx.MapCount   = 0;
+	m_lReadBaseData            = 0;
+	m_lRouteCount			   = 0;
+#ifdef _DAR
+	m_iARCount                 = 0;
+#endif
+	ClassWeighting=0;
+	b_ReRouting=nuFALSE;
+	
+	Renum_RoutingState=ROUTE_ERROR;
+
+#ifdef _DTMC
+	m_pclsTmc  = NULL;
+#endif
+
+#ifdef _DDST
+	m_pclsDst  = NULL;
+#endif
+
+#ifdef _DAR
+	m_pclsAR   = NULL;
+#endif
+	m_pclsNT[0]= NULL;
+	m_pclsNT[1]= NULL;
+	m_pcls3dp  = NULL;
+	m_pECI3dp  = NULL;
+	m_pclsThc=NULL;
+	m_pGThr[0]=NULL;
+	m_pGThr[1]=NULL;
+	m_pThr_F=NULL;
+	m_pThr_T=NULL;
+	m_pNT_F=NULL;
+	m_pNT_T=NULL;
+#ifdef _USETTI
+	m_pTTI_F = NULL;
+	m_pTTI_T = NULL;
+#endif
+	#if (defined VALUE_EMGRT) || (defined ZENRIN)
+		m_PTS_F=NULL;
+		m_PTS_T=NULL;
+	#endif
+
+	s_SaveCross.pRdSegList=NULL;
+	s_SaveCross.nRdSegCount=0;
+}
+
+Class_CalRouting::~Class_CalRouting()
+{
+	ReleaseMapIDtoMapIdx();
+#ifdef _USETTI
+	if(m_pTTI_F != NULL)
+	{
+		delete m_pTTI_F;
+	}
+	if(m_pTTI_T != NULL)
+	{
+		delete m_pTTI_T;
+	}
+#endif
+#ifdef _DTMC
+	m_pclsTmc  = NULL;
+#endif
+
+#ifdef _DDST
+	m_pclsDst  = NULL;
+#endif
+
+#ifdef _DAR
+	m_pclsAR   = NULL;
+#endif
+	m_pclsNT[0]=NULL;
+	m_pclsNT[1]=NULL;
+	m_pcls3dp=NULL;
+	m_pECI3dp= NULL;
+	m_pclsThc=NULL;
+	m_pGThr[0]=NULL;
+	m_pGThr[1]=NULL;
+	m_pThr_F=NULL;
+	m_pThr_T=NULL;
+#ifdef _USETTI
+	m_pTTI_F	= NULL;
+	m_pTTI_T	= NULL;
+#endif
+}
+
+nuBOOL Class_CalRouting::InitClass()
+{
+	m_pclsNT[0]->InitClass();
+	m_pclsNT[1]->InitClass();
+	m_pcls3dp->InitClass();
+	return nuTRUE;
+}
+nuVOID Class_CalRouting::CloseClass()
+{
+	m_pThr_F->CloseClass();//

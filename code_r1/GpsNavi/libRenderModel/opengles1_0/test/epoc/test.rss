@@ -1,0 +1,41 @@
+NAME TEST
+
+#include <eikon.rh>
+#include <eikcore.rsg>
+
+RESOURCE RSS_SIGNATURE {}
+RESOURCE TBUF { buf="";}
+
+RESOURCE EIK_APP_INFO
+{
+	hotkeys=r_hotkeys;
+	menubar=r_menubar;
+}
+
+RESOURCE HOTKEYS r_hotkeys 
+{
+	control=
+	{
+		HOTKEY { command=EEikCmdExit; key='e';}
+	};
+}
+
+RESOURCE MENU_BAR r_menubar
+{
+	titles=
+	{
+		MENU_TITLE { menu_pane=r_menupane;txt="Test";}
+	};
+}
+
+RESOURCE MENU_PANE r_menupane
+{
+        items=
+        {
+                MENU_ITEM {command=200;txt="Bitmap";},
+                MENU_ITEM {command=201;txt="OGLES";}
+        };
+}
+
+RESOURCE TBUF r_close_cmd { buf="Quit";}
+

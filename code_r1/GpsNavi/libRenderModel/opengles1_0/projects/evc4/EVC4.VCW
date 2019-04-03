@@ -1,0 +1,215 @@
+Microsoft eMbedded Visual Tools Workspace File, Format Version 4.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "OGLES"=.\OGLES.VCP - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name codegen
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "OGLES_CL"=.\OGLES_CL.VCP - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name codegen
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "codegen"=.\codegen.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "conform"=.\conform.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name conformshell
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fixed
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "conformshell"=.\conformshell.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ctk
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "covegl"=.\covegl.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ctk
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fixed
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "covgl"=.\covgl.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ctk
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fixed
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ctk"=.\ctk.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name OGLES_CL
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "fixed"=.\fixed.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "platform"=.\platform.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "primtest"=.\primtest.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ctk
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fixed
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "test"=.\test.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name OGLES
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
